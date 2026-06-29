@@ -2,14 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Global prefix — all routes become /api/...
   app.setGlobalPrefix('api');
 
-  // Global validation — validates all request bodies automatically
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -18,10 +18,11 @@ async function bootstrap() {
     }),
   );
 
-  // CORS — allows Postman and future frontend to call this API
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new LoggingInterceptor());
+
   app.enableCors();
 
-  // Swagger — auto-generated API documentation
   const config = new DocumentBuilder()
     .setTitle('CloudPulse API')
     .setDescription('Enterprise task and notification platform')
