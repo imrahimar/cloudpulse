@@ -21,17 +21,62 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# CloudPulse — Enterprise Task & Notification Platform
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+CloudPulse is a high-throughput backend service engineered for asynchronous event notifications, scheduled enterprise workflows, and task tracking. Architected with modular domain boundaries, strict RBAC authorization, and cloud integration.
 
-## Project setup
+---
+
+## Core Capabilities
+
+- **Task Orchestration:** Scheduled jobs, priority queues, and state transitions.
+- **Enterprise Notification Pipeline:** Multi-channel alerting with automated dispatch retry logic.
+- **Role-Based Access Control (RBAC):** Granular permission guards across all resource endpoints.
+- **Cloud Document Storage:** Automated report and attachment archiving via Microsoft Azure Blob Storage.
+- **API Documentation:** Interactive OpenAPI/Swagger interface with auto-generated schema validation.
+
+---
+
+## Architecture & Tech Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| **Runtime & Language** | Node.js, TypeScript |
+| **Framework** | NestJS (Modular Monolith) |
+| **Database & ORM** | PostgreSQL, TypeORM |
+| **Cloud Services** | Microsoft Azure (Blob Storage) |
+| **Containerization** | Docker, Docker Compose |
+| **Documentation** | Swagger / OpenAPI 3.0 |
+
+---
+
+## Project Structure
+
+```text
+src/
+├── common/             # Global guards, interceptors, filters, decorators
+├── config/             # Type-safe environment and service configuration
+├── modules/
+│   ├── auth/           # Authentication guards, JWT handling, and RBAC strategies
+│   ├── tasks/          # Task management, state machines, and scheduling
+│   ├── notifications/  # Asynchronous multi-channel alert dispatch pipelines
+│   └── storage/        # Microsoft Azure Blob Storage integration service
+├── database/           # TypeORM entity definitions and migration scripts
+├── app.module.ts       # Root dependency injection container
+└── main.ts             # Application entry point, Swagger bootstrap, and validation pipes
+```
+
+---
+
+## Project Setup
 
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+---
+
+## Compile and Run the Project
 
 ```bash
 # development
@@ -44,7 +89,9 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Run tests
+---
+
+## Run Tests
 
 ```bash
 # unit tests
@@ -57,9 +104,19 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+---
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+### Docker Production Deployment
+
+Build and run the containerized application stack with Docker Compose:
+
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+```
 
 If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
@@ -69,6 +126,8 @@ $ mau deploy
 ```
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+
+---
 
 ## Resources
 
@@ -83,15 +142,21 @@ Check out a few resources that may come in handy when working with NestJS:
 - To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
 - Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
+---
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+---
+
+## Stay in Touch
 
 - Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
+
+---
 
 ## License
 
