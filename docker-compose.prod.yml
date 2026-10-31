@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cloudpulse-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - cloudpulse
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cloudpulse-api
+    restart: always
+    ports:
+      - '${PORT:-5000}:5000'
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      AZURE_KEY_VAULT_URL: ${AZURE_KEY_VAULT_URL:-}
+      AZURE_STORAGE_ACCOUNT: ${AZURE_STORAGE_ACCOUNT:-}
+      AZURE_STORAGE_CONNECTION: ${AZURE_STORAGE_CONNECTION:-}
+      AZURE_SERVICE_BUS_CONNECTION: ${AZURE_SERVICE_BUS_CONNECTION:-}
+      AZURE_APPINSIGHTS_KEY: ${AZURE_APPINSIGHTS_KEY:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - cloudpulse
+
+volumes:
+  postgres_data:
+
+networks:
+  cloudpulse:
+    driver: bridge
